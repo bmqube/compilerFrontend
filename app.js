@@ -11,16 +11,25 @@ const memory = document.getElementById("memory");
 const runButton = document.getElementById("runButton");
 
 function runCode() {
-  if (runButton.innerText === "Run Your Code") {
+  if (runButton.innerText === "Run") {
     runButton.innerText = "Close";
     runButton.className = "btn btn-danger";
   } else {
-    runButton.innerText = "Run Your Code";
+    runButton.innerText = "Run";
     runButton.className = "btn btn-primary";
   }
 
   const collapse = document.getElementById("collapseStdout");
   if (code.value && !collapse.classList.contains("show")) {
+    stdout.innerHTML = `<div class="d-flex justify-content-center align-items-center">
+    <div
+      class="spinner-border text-primary mr-2"
+      style="width: 3rem; height: 3rem"
+      role="status"
+    ></div>
+    <h6>Executing...</h6>
+  </div>`;
+
     const tmp = languageBody.value.split("_");
     const language = tmp[0];
     const version = parseInt(tmp[1]);
@@ -44,8 +53,7 @@ function runCode() {
         time.innerText = `Execution Time: ${data["cpuTime"]}`;
         memory.innerText = `Memory Used: ${data["memory"]}`;
       });
-    // } else if () {
-  } else {
+  } else if (!stdout.innerText) {
     stdout.innerText = "Code is empty :/";
   }
 }
@@ -60,6 +68,25 @@ fetch(urlRemaining, {
   .then((data) => {
     document.getElementById("remaining").innerText = 200 - data["used"];
   });
+
+// Handling Tab on Textarea
+// Taken from http://jsfiddle.net/rainecc/n6aRj/1/
+if (code.addEventListener) {
+  code.addEventListener("keydown", this.keyHandler, false);
+} else if (code.attachEvent) {
+  code.attachEvent("onkeydown", this.keyHandler);
+}
+
+function keyHandler(e) {
+  const TABKEY = 9;
+  if (e.keyCode == TABKEY) {
+    this.value += "\t";
+    if (e.preventDefault) {
+      e.preventDefault();
+    }
+    return false;
+  }
+}
 
 const languages = [
   {

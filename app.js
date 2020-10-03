@@ -54,7 +54,7 @@ function runCode() {
         memory.innerText = `Memory Used: ${data["memory"]}`;
       });
   } else if (!stdout.innerText) {
-    stdout.innerText = "Code is empty :/";
+    stdout.innerText = "Code is empty";
   }
 }
 

@@ -66,7 +66,8 @@ fetch(urlRemaining, {
 })
   .then((res) => res.json())
   .then((data) => {
-    document.getElementById("remaining").innerText = 200 - data["used"];
+    document.getElementById("remaining").innerText =
+      data["used"] >= 200 ? 1 : 200 - data["used"];
   });
 
 // Handling Tab on Textarea
